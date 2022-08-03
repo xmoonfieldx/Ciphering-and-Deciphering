@@ -46,7 +46,7 @@ int main()
     t=(p-1)*(q-1);
     d=gcdExtended(e,t,&x,&y);
     if(d<0)
-        d+=26;
+        d+=t;
     printf("M:%d n:%d t:%d e:%d d:%d\n",m,n,t,e,d);
     //Computing ciphertext
     //M^emodn
