@@ -3,36 +3,37 @@
 #include <string.h>
 int main() {
     // Write C code here
-    int key=3,i=0;
-    char s[200],x=' ';
+    char s[100];
+    int i, n;
+    printf("Enter the message to be encrypted: ");
     scanf("%[^\n]s",s);
-    printf("After encryption: ");
-    while(s[i]!=0)
+    printf("Enter the key: ");
+    scanf("%d",&n);
+    printf("Ciphertext: ");
+    for(i=0;i<strlen(s);i++)
     {
         if(s[i]==' ')
-            printf("%c",s[i++]);
-        else
         {
-            s[i]=(s[i]-'a'+key)%26;
-            printf("%c",s[i]+'A');
-            i++;
+            printf("%c",s[i]);
+        }
+        else{
+            s[i]=(s[i]-'a'+n)%26;
+            s[i]+='A';
+            printf("%c",s[i]);
         }
     }
-    printf("\n");
-    i=0;
-    printf("After decryption: ");
-    while(s[i]!=0)
+    printf("\nPlaintext: ");
+    for(i=0;i<strlen(s);i++)
     {
         if(s[i]==' ')
-            printf("%c",s[i++]);
-        else
-        {
-            s[i]=(s[i]-key)%26;
+            printf("%c",s[i]);
+        else{
+            s[i]=(s[i]-'A'-n)%26;
             if(s[i]<0)
                 s[i]+=26;
-            printf("%c",s[i]+'a');
-            i++;
+            s[i]+='a';
+            printf("%c",s[i]);
         }
     }
-    
+    return 0;
 }
