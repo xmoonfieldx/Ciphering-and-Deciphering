@@ -1,27 +1,19 @@
-int main() {
-    // Write C code here
-    char x[]="paymoremoneys";
-    char key[]="cashnotneeded";
-    char a,b,c;
-    int i,j;
-    for(i=0;i<strlen(x);i++)
-    {
-        a=x[i]-'a';
-        b=key[i%strlen(key)]-'a';
-        x[i]=(a+b)%26+'A';
-    }
-    printf("After encryption: ");
-    printf("%s",x);
-    for(i=0;i<strlen(x);i++)
-    {
-        a=x[i]-'A';
-        b=key[i%strlen(key)]-'a';
-        c=(a-b)%26;
-        if(c<0)
-            c+=26;
-        x[i]=c+'a';
-    }
-    printf("\n\nAfter Decryption: ");
-    printf("%s",x);
-    return 0;
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main()
+{
+    int i;
+    char s[100],key[20];
+    printf("Plaintext: ");
+    scanf("%s",s);
+    printf("Key: ");
+    scanf("%s",key);
+    int m=strlen(key);
+    for(i=0;i<strlen(s);i++)
+        s[i]=((s[i]-'a')+(key[i%m]-'a'))%26+'A';
+    printf("\nEncryption: %s",s);
+    for(i=0;i<strlen(s);i++)
+        s[i]=((s[i]-'A')-(key[i%m]-'a')+26)%26+'a';
+    printf("\nEncryption: %s",s);
 }
