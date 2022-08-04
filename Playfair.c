@@ -1,151 +1,141 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-int main() {
-    // Write C code here
-    int i=0, j=0, count=0,l=0,x=0,q=0,t=0;
-    int check[26]={0},e,f,g,h;
-    check[9]=-1;
-    char k[]="newzealandnavy",play[5][5];
-    char s[]="meetmeafterthetogaparty",decr[100],a,b;
-    int length=strlen(k);
-    //Creating matrix
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+#include<string.h>
+int main()
+{
+    int check[26]={0},i,j,k=0,l=0,na=0,x,y;
+    check[9]=1;
+    char s[100],key[100],lim[100],play[5][5],decr[100];
+    printf("Plaintext: ");
+    scanf("%s",s);
+    printf("Key: ");
+    scanf("%s",key);
+    int length=strlen(key);
+    //matrix
     for(i=0;i<5;i++)
+    {
         for(j=0;j<5;j++)
         {
-            if(--length<0)
+            if(length==0)
             {
-                while(1)
-                {
-                    if(check[count]==0)
-                    {
-                        check[count]=-1;
-                        play[i][j]=65+count;
-                        break;
-                    }
-                    count++;
-                }
+                while(check[l]!=0)
+                    l++;
+                play[i][j]=l+'A';
+                check[l]=1;
             }
             else
             {
-                x=k[l]-'a';
-                if(check[x]==-1)
+                length--;
+                if(check[key[k]-'a']==0)
                 {
-                    l++;
+                    play[i][j]=toupper(key[k]);
+                    check[key[k]-'a']=1;
+                }
+                else 
                     j--;
-                }
-                else
-                {
-                    if(k[l]=='a')
-                    {
-                        check[0]=-1;
-                    }
-                    check[x]=-1;
-                    play[i][j]=x+65;
-                    l++;
-              }
+                k++;
             }
         }
-        for(i=0;i<5;i++)
-        {
-            for(j=0;j<5;j++)
-                printf("%c ",play[i][j]);
-            printf("\n");
-        }
+    }
+    for(i=0;i<5;i++)
+    {
+        for(j=0;j<5;j++)
+            printf("%c ",play[i][j]);
         printf("\n");
-        for(count=0;count<strlen(s);count=count+2)
-        {
-            a=toupper(s[count]);
-            b=toupper(s[count+1]);
-            if(a==b || b=='\0')
+    }
+    
+    int mark=0,a,b,c,d;
+    
+    //Encryption
+    printf("Encryption: ");
+    for(i=0;i<strlen(s);i=i+2)
+    {
+        x=toupper(s[i]);
+        y=toupper(s[i+1]);
+        if(x==y || y=='\0')
+            y='X';
+        for(j=0;j<5;j++)
+            for(k=0;k<5;k++)
             {
-                b='X';
-                count--;
-            }
-            //printf("%c%c\n",a,b);
-            //finding pairs in matrix
-            for(i=0;i<5;i++)
-                for(j=0;j<5;j++)
+                if(play[j][k]==x)
                 {
-                    if(a==play[i][j])
-                    {
-                        e=i;
-                        f=j;
-                    }
-                    else if(b==play[i][j])
-                    {
-                        g=i;
-                        h=j;
-                    }
+                    a=j;
+                    b=k;
                 }
-            //column
-            if(f==h)
-            {
-                a=play[(e+1)%5][f];
-                b=play[(g+1)%5][h];
-            }
-            //row
-            else if(e==g)
-            {
-                a=play[e][(f+1)%5];
-                b=play[g][(h+1)%5];
-            }
-            //rectangle
-            else
-            {
-                a=play[e][h];
-                b=play[g][f];
-            }
-            decr[q++]=a;
-            decr[q++]=b;
-            printf("%c%c\n",decr[q-2],decr[q-1]);
-            t+=2;
-        }
-        printf("\n");
-        
-        
-        
-        //Decryption
-        for(count=0;count<t;count=count+2)
-        {
-            a=toupper(decr[count]);
-            b=toupper(decr[count+1]);
-            //printf("%c%c\n",a,b);
-            //finding pairs in matrix
-            for(i=0;i<5;i++)
-                for(j=0;j<5;j++)
+                if(play[j][k]==y)
                 {
-                    if(a==play[i][j])
-                    {
-                        e=i;
-                        f=j;
-                    }
-                    else if(b==play[i][j])
-                    {
-                        g=i;
-                        h=j;
-                    }
+                    c=j;
+                    d=k;
                 }
-            //column
-            if(f==h)
-            {
-                a=play[(e-1)%5][f];
-                b=play[(g-1)%5][h];
             }
-            //row
-            else if(e==g)
-            {
-                a=play[e][(f-1)%5];
-                b=play[g][(h-1)%5];
-            }
-            //rectangle
-            else
-            {
-                a=play[e][h];
-                b=play[g][f];
-            }
-            printf("%c%c\n",a,b);
+        //row
+        if(a==c)
+        {
+            lim[na++]=play[a][(b+1)%5];
+            lim[na++]=play[c][(d+1)%5];
         }
-    return 0;
+        //column
+        else if(b==d)
+        {
+            lim[na++]=play[(a+1)%5][b];
+            lim[na++]=play[(c+1)%5][d];
+        }
+        //rectangle
+        else
+        {
+            lim[na++]=play[a][d];
+            lim[na++]=play[c][b];
+        }
+        printf("%c%c",lim[na-2],lim[na-1]);
+    }
+    
+    //Decryption
+    na=0;
+    printf("\nDecryption: ");
+    for(i=0;i<strlen(lim);i=i+2)
+    {
+        x=toupper(lim[i]);
+        y=toupper(lim[i+1]);
+        if(x==y || y=='\0')
+            y='X';
+        for(j=0;j<5;j++)
+            for(k=0;k<5;k++)
+            {
+                if(play[j][k]==x)
+                {
+                    a=j;
+                    b=k;
+                }
+                if(play[j][k]==y)
+                {
+                    c=j;
+                    d=k;
+                }
+            }
+        //row
+        if(a==c)
+        {
+            decr[na++]=play[a][(b-1+5)%5];
+            decr[na++]=play[c][(d-1+5)%5];
+        }
+        //column
+        else if(b==d)
+        {
+            decr[na++]=play[(a-1+5)%5][b];
+            decr[na++]=play[(c-1+5)%5][d];
+        }
+        //rectangle
+        else
+        {
+            decr[na++]=play[a][d];
+            decr[na++]=play[c][b];
+        }
+        if(decr[na-1]=='X')
+            decr[na-1]=decr[na-2];
+        decr[na-2]=tolower(decr[na-2]);
+        decr[na-1]=tolower(decr[na-1]);
+    }
+    decr[strlen(s)]='\0';
+    printf("%s",decr);
 }
